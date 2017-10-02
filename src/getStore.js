@@ -1,24 +1,8 @@
-import {
-    createStore,
-    applyMiddleware
-} from 'redux';
-
-import {
-    fromJS
-} from 'immutable';
-
-import {
-    users,
-} from './../server/db';
-
-import {
-    getDefaultState,
-} from './../server/getDefaultState';
-
-import {
-    initializeDB
-} from './../server/db/initializeDB'
-
+import { createStore,applyMiddleware } from 'redux';
+import { fromJS } from 'immutable';
+import { users } from './../server/db';
+import { getDefaultState } from './../server/getDefaultState';
+import { initializeDB } from './../server/db/initializeDB'
 import { createLogger } from 'redux-logger'
 
 initializeDB();
