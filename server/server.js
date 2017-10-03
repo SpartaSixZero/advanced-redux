@@ -6,17 +6,14 @@ import webpackConfig from './../webpack.config'
 import webpackDevMiddleware from 'webpack-dev-middleware';
 const compiler = webpack(webpackConfig);
 import webpackHotMiddleware from "webpack-hot-middleware";
-
-import {
-    channels,
-} from './db/Channel';
-
-import {
-    users
-} from './db/User';
+import socketIO from 'socket.io';
+import { channels } from './db/Channel';
+import { users } from './db/User';
 
 let app = express();
 const server = http.createServer(app);
+const io = socketIO(server);
+
 
 app.use(cors());
 app.use(webpackDevMiddleware(compiler, {
@@ -93,7 +90,7 @@ export const createMessage = ({userID,channelID,messageID,input}) =>{
     };
 
     channel.messages.push(message);
-    io.emit("NEW_MESSAGE",{channelID:channel.id, ...message});
+    io.emit("NEW_MESSAGE", {channelID:channel.id, ...message});
 };
 
 app.use('/input/submit/:userID/:channelID/:messageID/:input',({params:{userID,channelID,messageID,input}},res)=>{
@@ -114,3 +111,6 @@ const port = 9000;
 server.listen(port,()=>{
     console.info(`Redux Messenger is listening on port ${port}.`);
 });
+
+import { simulateActivity } from './simulateActivity';
+simulateActivity(currentUser.id);
