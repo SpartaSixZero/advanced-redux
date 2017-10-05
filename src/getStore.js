@@ -1,30 +1,11 @@
-import {
-    createStore,
-    applyMiddleware,
-    compose
-} from 'redux';
-
-import {
-    fromJS
-} from 'immutable';
-
-import {
-    users,
-} from './../server/db';
-
-import {
-    getDefaultState,
-} from './../server/getDefaultState';
-
-import {
-    initializeDB
-} from './../server/db/initializeDB'
-
-import { createSocketMiddleware} from './socketMiddleware';
-
-import {
-    RECEIVE_MESSAGE
-} from './actions'
+import { createStore, applyMiddleware, compose } from 'redux';
+import { fromJS } from 'immutable';
+import { users } from './../server/db';
+import { getPreloadedState } from './getPreloadedState';
+import { getDefaultState } from './../server/getDefaultState';
+import { initializeDB } from './../server/db/initializeDB'
+import { createSocketMiddleware } from './socketMiddleware';
+import { RECEIVE_MESSAGE } from './actions'
 
 const io = window.io;
 
@@ -61,8 +42,8 @@ const enhancer = compose(
 );
 
 const currentUser = users[0];
-const defaultState = fromJS(getDefaultState(currentUser));
-const store = createStore(reducer,defaultState,enhancer);
+//const defaultState = fromJS(getDefaultState(currentUser));
+const store = createStore(reducer,preloadedState,enhancer);
 
 const socket = io();
 for (const key in socketConfigIn) {
